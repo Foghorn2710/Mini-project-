@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0b0c">
+<title>clippng.in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="glow" aria-hidden="true"></div>
+
+<div class="page">
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#clips" aria-label="clippng.in home">Clippng.in</a>
+    <nav class="links" aria-label="Main">
+      <a href="#clips" id="nav-clips">Clips</a>
+      <a href="#invoices" id="nav-invoices">Invoices</a>
+      <a href="#earnings" id="nav-earnings">Earnings</a>
+      <a href="#faq" id="nav-faq">FAQ</a>
+    </nav>
+    <a class="btn o sm" href="#invoices">Create invoice</a>
+  </div>
+</header>
+
+<main>
+<!-- CLIPS -->
+<section id="view-clips">
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <div class="mono eyebrow">Upload studio</div>
+        <h1 class="disp">Upload video here</h1>
+        <p class="lead">Upload one long video, press Clip, and get a wall of short vertical clips. Then bill them in seconds.</p>
+        <div class="cta">
+          <button class="btn o" id="hero-upload" type="button">Upload a clip</button>
+          <a class="btn" href="#invoices">Create invoice</a>
+        </div>
+        <div class="hstats">
+          <div><b id="st-clips">0</b><span class="mono">Uploads</span></div>
+          <div><b id="st-made">0</b><span class="mono">Clips made</span></div>
+          <div><b id="st-saved">0</b><span class="mono">Saved invoices</span></div>
+          <div><b id="st-paid">0</b><span class="mono">Paid</span></div>
+        </div>
+      </div>
+      <div class="stagecol"><div class="phones" id="phones" aria-label="Clip preview"></div><div class="dlbar" id="dlbar"></div></div>
+    </div>
+
+    <div class="panel" id="panel">
+      <h2 class="disp">Drop a link or upload a file.<span>We keep it all in one place.</span></h2>
+      <p>Drag video files onto this card or press Upload file. Pasting a link works when link import is turned on for your server.</p>
+      <div class="barrow">
+        <form class="bar" id="link-form">
+          <input id="link-input" type="text" inputmode="url" placeholder="Paste a video link" aria-label="Video link">
+          <button class="btn o sm" type="submit">Add clip</button>
+        </form>
+        <span class="or">or</span>
+        <button class="btn" id="pick-btn" type="button">Upload file</button>
+        <input id="file-input" type="file" accept="video/*" multiple hidden>
+        <div class="set">
+          <label class="sw"><input type="checkbox" id="opt-auto"><span class="knob"></span><span>Auto-clip after upload</span></label>
+          <label class="sel"><span>Make</span><select id="opt-n"><option value="5">5 clips</option><option value="8">8 clips</option><option value="10">10 clips</option><option value="15">15 clips</option></select></label>
+          <label class="sel"><span>Each about</span><select id="opt-len"><option value="15">15 sec</option><option value="30">30 sec</option><option value="45">45 sec</option><option value="60">60 sec</option></select></label>
+          <label class="sel"><span>Format</span><select id="opt-fmt"><option value="crop">Vertical crop</option><option value="blur">Vertical with blur</option><option value="original">Original shape</option></select></label>
+        </div>
+      </div>
+    </div>
+
+    <div id="clipbar" class="clipbar" hidden></div>
+
+    <div id="results" hidden>
+      <div class="sec-head">
+        <div><h2 class="disp">Your clips</h2><p id="res-sub"></p></div>
+        <button class="btn sm" id="res-invoice" type="button">Add all to an invoice</button>
+      </div>
+      <div id="resgrid"></div>
+    </div>
+
+    <div class="sec-head">
+      <div><h2 class="disp" id="lib-title">Sample clips</h2><p id="lib-sub"></p></div>
+    </div>
+    <div class="lib-grid" id="libgrid"></div>
+  </div>
+</section>
+
+<!-- INVOICES -->
+<section id="view-invoices" hidden>
+  <div class="wrap">
+    <div class="vhead">
+      <div class="mono eyebrow">Invoice generator</div>
+      <h1 class="disp">Build it while you type.</h1>
+      <p>Fill in the details on the left. The invoice updates on the right as you go.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+        <button class="btn" id="new-inv" type="button">New invoice</button>
+        <button class="btn o" id="save-inv" type="button">Save invoice</button>
+      </div>
+    </div>
+    <div class="inv">
+      <div class="form card">
+        <div><h3>From</h3><div class="cols">
+          <label class="f">Business name<input id="f-from-name" data-b="from.name"></label>
+          <label class="f">Email<input id="f-from-email" data-b="from.email" type="email"></label>
+          <label class="f span2">Address<textarea id="f-from-addr" data-b="from.addr"></textarea></label>
+        </div></div>
+        <div><h3>Bill to</h3><div class="cols">
+          <label class="f">Client name<input id="f-to-name" data-b="to.name"></label>
+          <label class="f">Client email<input id="f-to-email" data-b="to.email" type="email"></label>
+          <label class="f span2">Client address<textarea id="f-to-addr" data-b="to.addr"></textarea></label>
+        </div></div>
+        <div><h3>Details</h3><div class="cols">
+          <label class="f">Invoice number<input id="f-number" data-b="number"></label>
+          <label class="f">Currency<select id="f-cur" data-b="currency"><option value="INR">INR (₹)</option><option value="USD">USD ($)</option><option value="EUR">EUR (€)</option><option value="GBP">GBP (£)</option></select></label>
+          <label class="f">Issue date<input id="f-issue" data-b="issue" type="date"></label>
+          <label class="f">Due date<input id="f-due" data-b="due" type="date"></label>
+        </div></div>
+        <div><h3>Line items</h3>
+          <div class="items" id="items"></div>
+          <div class="addrow">
+            <button class="btn xs" id="add-item" type="button">+ Add item</button>
+            <button class="btn xs" id="add-clips" type="button">+ Add from clips</button>
+          </div>
+        </div>
+        <div><h3>Tax and discount</h3><div class="cols">
+          <label class="f">Tax label<input id="f-taxlabel" data-b="taxLabel"></label>
+          <label class="f">Tax rate (%)<input id="f-taxrate" data-b="taxRate" type="number" min="0" step="0.5"></label>
+          <label class="f">Discount (%)<input id="f-disc" data-b="discount" type="number" min="0" max="100" step="0.5"></label>
+        </div></div>
+        <div><h3>Notes</h3>
+          <label class="f"><textarea id="f-notes" data-b="notes" aria-label="Notes"></textarea></label>
+        </div>
+      </div>
+      <div class="preview-wrap">
+        <div id="paper" class="paper" aria-live="polite"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn o xs" id="pdf-inv" type="button">Download PDF</button><button class="btn xs" id="copy-inv" type="button">Copy as text</button></div>
+      </div>
+    </div>
+    <div class="sec-head"><div><h2 class="disp">Saved invoices</h2></div></div>
+    <div id="saved" class="saved"></div>
+  </div>
+</section>
+
+<!-- EARNINGS -->
+<section id="view-earnings" hidden>
+  <div class="wrap">
+    <div class="vhead">
+      <div class="mono eyebrow">Creator calculator</div>
+      <h1 class="disp">What could your clips earn you?</h1>
+      <p>Model monthly payouts from your clip volume, average views and audience region.</p>
+    </div>
+    <div class="calc">
+      <div class="card">
+        <div><div class="cl"><span>1. Select platform</span></div><div class="chips" id="c-plat"></div></div>
+        <div><div class="cl"><span>2. Primary audience region</span></div><div class="chips r" id="c-reg"></div></div>
+        <div><div class="cl"><span>3. Average views per clip</span><em id="v-views">1M</em></div>
+          <div class="rwrap"><input class="rng" id="rng-views" type="range" min="0" max="6" step="1" value="4" aria-label="Average views per clip"></div>
+          <div class="ticks"><span>50K</span><span>100K</span><span>250K</span><span>500K</span><span>1M</span><span>2M</span><span>5M</span></div></div>
+        <div><div class="cl"><span>4. Clips posted per month</span><em id="v-clips">15 clips</em></div>
+          <div class="rwrap"><input class="rng" id="rng-clips" type="range" min="1" max="30" step="1" value="15" aria-label="Clips posted per month"></div>
+          <div class="ticks"><span>1 clip</span><span>15 clips</span><span>30 clips</span></div></div>
+      </div>
+      <div class="result">
+        <div class="mono">Your estimated monthly earnings</div>
+        <div class="big" id="r-range">$0</div>
+        <div class="sub" id="r-sub"></div>
+        <div class="rows" id="r-rows"></div>
+        <button class="btn k" id="bill-est" type="button">Bill this estimate</button>
+        <div class="fine">Estimates only. Real earnings depend on the platform, your audience and verification.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="view-faq" hidden>
+  <div class="wrap">
+    <div class="vhead">
+      <h1 class="disp">Questions, answered.</h1>
+      <p>How uploads, invoices and estimates work in clippng.in.</p>
+    </div>
+    <div class="faq">
+      <details open><summary>How does clipping work?</summary><p>Upload a video, then press Clip it. The server reads the audio, finds the loudest moments and cuts each one into its own vertical MP4 file, ranked by an energy score. Turn on Auto-clip to skip the button. Choose how many clips, how long and which format before you start.</p></details>
+      <details><summary>How do I download a clip?</summary><p>Select a clip to open it on the phone, then press Download clip under the phone. Every clip tile has its own Download button, and each upload has a Download all button that gives you a zip.</p></details>
+      <details><summary>How do I add a video?</summary><p>Drag a video file onto the upload card or press Upload file. MP4, MOV, M4V, WEBM, MKV and AVI files work.</p></details>
+      <details><summary>Can I paste a link?</summary><p>Only when link import is turned on for your server, which needs yt-dlp installed. Otherwise upload the video file itself.</p></details>
+      <details><summary>How do invoices work?</summary><p>Fill in your details and your client's. Add line items by hand or press Add from clips to turn your clips into line items. Tax, discount and totals update live. Save the invoice, mark it Draft, Sent or Paid, and download it as a PDF.</p></details>
+      <details><summary>Where is my data stored?</summary><p>Uploads, clips and saved invoices live on the server that runs this app. Uploads and clips are deleted automatically after a set time, 24 hours unless your server changes it.</p></details>
+      <details><summary>Are the earning estimates guaranteed?</summary><p>No. They are illustrative ranges based on views, region and platform. Real payouts vary with your audience, the platform's rules and account verification.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="foot mono">© 2026 clippng.in</footer>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script src="/app.js"></script>
+</body>
+</html>
